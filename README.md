@@ -1,2 +1,2 @@
 # Bankist
-Simple simulator of the banking system with JavaScript
+Simple simulator of banking system with JavaScript
