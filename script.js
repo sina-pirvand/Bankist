@@ -83,3 +83,21 @@ function displayMovements(movements) {
 displayMovements(account1.movements);
 
 //! COMPUTING USER NAMES
+/*
+ *the user name should be first letter of each full name and should be lower case.
+ *Ex: Steven Thomas Williams => stw
+ */
+
+function createUsernames(accs) {
+  //* this creates a username key for every account
+  accs.forEach(
+    (acc) =>
+      (acc.username = acc.owner
+        .toLowerCase()
+        .split(" ")
+        .map((name) => name[0])
+        .join(""))
+  );
+  console.log(accounts);
+}
+createUsernames(accounts);
