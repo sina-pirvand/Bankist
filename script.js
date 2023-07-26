@@ -101,3 +101,17 @@ function createUsernames(accs) {
   console.log(accounts);
 }
 createUsernames(accounts);
+
+//! FILTER DEPOSIT AND WITHDRAW
+const movements = account1.movements;
+const deposits = movements.filter((mov) => mov > 0);
+const withdrawals = movements.filter((mov) => mov < 0);
+console.log(deposits); //[200, 450, 3000, 70, 1300]
+console.log(withdrawals); //[-400, -650, -130]
+
+//! CALC ACCOUNT BALANCE
+function calcBalance(movements) {
+  const balance = movements.reduce((acc, el) => acc + el);
+  labelBalance.textContent = `${balance}€`;
+}
+calcBalance(account1.movements);
