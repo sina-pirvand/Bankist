@@ -71,7 +71,7 @@ function displayMovements(movements) {
     <div class="movements__type movements__type--${type}">${
       i + 1
     }: ${type}</div>
-    <div class="movements__value">${mov}</div>
+    <div class="movements__value">${mov}€</div>
   </div>
     `;
 
@@ -115,3 +115,26 @@ function calcBalance(movements) {
   labelBalance.textContent = `${balance}€`;
 }
 calcBalance(account1.movements);
+
+//! CALC ACCOUNT SUM
+const calcAccSum = function (movements) {
+  const incomes = movements
+    .filter((mov) => mov > 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumIn.textContent = `${incomes}€`;
+
+  const outcomes = movements
+    .filter((mov) => mov < 0)
+    .reduce((acc, mov) => acc + mov, 0);
+  labelSumOut.textContent = `${Math.abs(outcomes)}€`;
+
+  //* interest is 1.2% of each deposite and will only be paid if it's bigger than 1€
+  //* ex: if you deposite 80€, 1.2% * 80 = 0.96€ so it won't be paid
+  const interest = movements
+    .filter((mov) => mov > 0)
+    .map((deposit) => (deposit * 1.2) / 100)
+    .filter((interest) => interest >= 1)
+    .reduce((acc, interest) => acc + interest, 0);
+  labelSumInterest.textContent = `${interest}€`;
+};
+calcAccSum(account1.movements);
