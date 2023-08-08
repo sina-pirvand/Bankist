@@ -108,9 +108,9 @@ console.log(deposits); //[200, 450, 3000, 70, 1300]
 console.log(withdrawals); //[-400, -650, -130]
 
 //! CALC ACCOUNT BALANCE
-function calcBalance(movements) {
-  const balance = movements.reduce((acc, el) => acc + el);
-  labelBalance.textContent = `${balance}€`;
+function calcBalance(acc) {
+  acc.balance = acc.movements.reduce((acc, el) => acc + el);
+  labelBalance.textContent = `${acc.balance}€`;
 }
 
 //! CALC ACCOUNT SUM
@@ -134,6 +134,18 @@ const calcAccSum = function (acc) {
     .reduce((acc, interest) => acc + interest, 0);
   labelSumInterest.textContent = `${interest}€`;
 };
+
+function updateUI(acc) {
+  console.log(acc);
+  //* Display movements
+  displayMovements(acc.movements);
+
+  //* Display balance
+  calcBalance(acc);
+
+  //* Display Summary
+  calcAccSum(acc);
+}
 
 //! EMPLEMENT USER LOGIN LOGIC
 let currentAccount;
@@ -167,13 +179,33 @@ btnLogin.addEventListener("click", (e) => {
     inputLoginUsername.value = inputLoginPin.value = "";
     inputLoginPin.blur();
 
-    //* Display movements
-    displayMovements(currentAccount.movements);
+    // Update UI
+    updateUI(currentAccount);
+  }
+});
 
-    //* Display balance
-    calcBalance(currentAccount.movements);
+//! IMPLEMENT TRANSFER MONEY LOGIC
+btnTransfer.addEventListener("click", (e) => {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAcc = accounts.find(
+    (acc) => acc.username === inputTransferTo.value
+  );
 
-    //* Display Summary
-    calcAccSum(currentAccount);
+  //* the amount of transfered money must be positive & we should have enough balance
+  //* also we should't be able to transfer money to our account
+  //* and the reciever account must exist
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    receiverAcc?.username !== currentAccount.username &&
+    receiverAcc
+  ) {
+    //* Doing transfer
+    currentAccount.movements.push(-amount); // move money
+    receiverAcc.movements.push(amount); // add money
+
+    //* Upadte UI
+    updateUI(currentAccount);
   }
 });
