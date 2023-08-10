@@ -192,9 +192,12 @@ btnTransfer.addEventListener("click", (e) => {
     (acc) => acc.username === inputTransferTo.value
   );
 
-  //* the amount of transfered money must be positive & we should have enough balance
-  //* also we should't be able to transfer money to our account
-  //* and the reciever account must exist
+  //* Epmty out the inputs no matter transfer is success or not
+  inputTransferAmount.value = inputTransferTo.value = "";
+
+  //* The amount of transfered money must be positive & we should have enough balance
+  //* Also we should't be able to transfer money to our account
+  //* And the reciever account must exist
   if (
     amount > 0 &&
     currentAccount.balance >= amount &&
@@ -207,5 +210,28 @@ btnTransfer.addEventListener("click", (e) => {
 
     //* Upadte UI
     updateUI(currentAccount);
+  }
+});
+
+//! DELETE ACCOUNT LOGIC
+btnClose.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  if (
+    inputCloseUsername.value === currentAccount.username &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      (acc) => acc.username === currentAccount.username
+    );
+
+    //* Delete account
+    accounts.splice(index, 1);
+
+    //*Hide UI after deleting account
+    containerApp.style.opacity = 0;
+
+    //* Empty out inputs
+    inputCloseUsername.value = inputClosePin.value = "";
   }
 });
